@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>A nice calculator</title>
+	<style>
+	body{
+		background-color: #777;
+	}
+	#background
+	{
+		width: 300px;
+		height: 400px;
+		background-color: gray;
+		margin: 50px auto;
+		-webkit- animation: bgchange 2s 2s alternate infinite;
+		transition: all 2s ease;
+	}
+	#result
+	{
+		display: block;
+		font-family: sans-serif;
+		width: 230px;
+		height: 40px;
+		margin: 10px auto;
+		text-align: right;
+		background: #3b3535;
+		color: #fff;
+		font-size: 20px;
+		padding-top: 20px;
+		margin-left: 25px;
+		outline: none;
+		overflow: hidden;
+		letter-spacing: 4px;
+		position: relative;
+		top: 10px;
+		border: 0;
+	}
+	#first-rows
+	{
+      margin-bottom: 20px;
+      position: relative;
+      top: 10px;
+	}
+
+	.del-bg
+	{
+		background-color: #24b4de;
+		color: #fff;
+		font-size: 26px;
+		cursor: pointer;
+		outline: none;
+		border-bottom: 3px solid #399cb9;
+	}
+	.del-bg:active{
+		background-color: #24b4de;
+		color: #fff;
+		font-size: 26px;
+		cursor: pointer;
+		outline: none;
+		box-shadow: inset 4px 4px 4px #399cb9;
+	}
+	#delete
+	{
+		width: 110px;
+		height: 50px;
+		margin-left: 25px;
+		border-radius: 4px;
+	}
+	.btn-style
+	{
+		width: 50px;
+		height: 50px;
+		margin-left: 5px;
+		border-radius: 4px;
+	}
+	.opera-bg
+	{
+		background-color: #333;
+		color: fff;
+		font-size: 26px;
+		cursor: pointer;
+		outline: none;
+		border-bottom: 3px solid #555;
+	}
+	.opera-bg:active
+	{
+		background-color: #333;
+		color: fff;
+		font-size: 26px;
+		cursor: pointer;
+		outline: none;
+		box-shadow: inset 4px 4px 4px #555;
+	}
+	.fall-back
+	{
+		margin-left: 3px !important;
+	}
+	.rows{
+		width: 300px;
+		margin-top: 10px;
+	}
+	.num-bg
+	{
+		background: #000;
+		color: #fff;
+		font-size: 22px;
+		cursor: pointer;
+		border-bottom: 3px solid #333;
+		outline: none;
+	}
+	.num-bg:active
+	{
+		background: #000;
+		color: #fff;
+		font-size: 22px;
+		cursor: pointer;
+		box-shadow: inset 3px 3px 3px #555;
+		outline: none;
+	}
+	.first-child
+	{
+		margin-left: 25px;
+	}
+	#eqn-bg
+	{
+		background: darkgreen;
+		color: #fff;
+		font-size: 22px;
+		cursor: pointer;
+		outline: none;
+		border-bottom: 3px solid darkgreen;
+	}
+	#eqn-bg:active
+	{
+      background: darkgreen;
+		color: #fff;
+		font-size: 22px;
+		cursor: pointer;
+		outline: none;
+		box-shadow: inset 3px 3px 3px green;
+	}
+	.eqn
+	{
+		width: 50px;
+		height: 50px;
+		margin-left: 5px;
+		border-radius: 4px;
+	}
+	.align{
+		margin-left: 6px !important;
+	}
+	#delete
+	{
+		width: 110px;
+		height: 50px;
+		margin-left: 25px;
+		border-radius: 5px;
+	}
+    </style>
+</head>
+<body>
+   <div id="background">
+   	
+   	<div id="result"></div>
+   	<div id="main">
+   		<div id="first-rows">
+   			<button class="del-bg" id="delete">Delete</button>
+   			<button class="btn-style operator opera-bg fall-back" value="%">%</button>
+   			<button class="btn-style operator opera-bg value" value="+">+</button>
+   		</div>
+
+   		<div class="rows">
+   			<button class="btn-style num-bg num first-child" value="7">7</button>
+   			<button class="btn-style num-bg num" value="8">8</button>
+   			<button class="btn-style num-bg num" value="9">9</button>
+   			<button class="btn-style operator opera-bg" value="-">-</button>
+   		</div>
+
+   		<div class="rows">
+   			<button class="btn-style num-bg num first-child" value="4">4</button>
+   			<button class="btn-style num-bg num" value="5">5</button>
+   			<button class="btn-style num-bg num" value="6">6</button>
+   			<button class="btn-style operator opera-bg" value="*">x</button> 
+   		</div>
+
+   		<div class="rows">
+   			<button class="btn-style num-bg num first-child" value="1">1</button>
+   			<button class="btn-style num-bg num" value="2">2</button>
+   			<button class="btn-style num-bg num" value="3">3</button>
+   			<button class="btn-style operator opera-bg" value="/">/</button>
+   		</div>
+
+   		<div class="rows">
+   			<button class="num-bg zero" id="delete" value="0">0</button>
+   			<button class="btn-style num-bg period fall-back" value=".">.</button>
+   			<button class="eqn align" id="eqn-bg" value="=">=</button>
+   		</div>
+   	</div>
+   </div>
+   <script>
+   	window.onload = function(){
+   		var current, screen, output, zero, period, operator, limit;
+   		screen = document.getElementById("result");
+   		var elem = document.querySelectorAll(".num");
+   		var len = elem.length;
+
+   		for (var i = 0; i < len; i++) {
+   			elem[i].addEventListener("click", function(){
+   				num = this.value;
+   				output = screen.innerHTML += num;
+   				limit = output.length;
+   				if (limit > 16)
+   				{
+   					alert("Sorry, no more input is allowed.");
+   				}
+   			}, false);
+   		}
+
+
+      document.querySelector(".zero").addEventListener("click", function(){
+      	zero = this.value;
+      	if(screen.innerHTML === "")
+      	{
+      		output = screen.innerHTML = zero;
+      	}
+      	else if (screen.innerHTML === output) {
+         output = screen.innerHTML += zero; 
+      	}
+      }, false);
+       
+
+     document.querySelector(".period").addEventListener("click", function(){
+     period = this.value;
+     if(screen.innerHTML === "")
+     {
+     	output = screen.innerHTML = screen.innerHTML.concat("0.");
+     }
+     else if (screen.innerHTML === output){
+     	screen.innerHTML = screen.innerHTML.concat(".");
+     }
+     }, false);
+
+
+     document.querySelector("#eqn-bg").addEventListener("click", function(){
+     if(screen.innerHTML === output)
+     {
+     	screen.innerHTML = eval(output);
+     	output = screen.innerHTML;
+     }
+     else
+     {
+     	screen.innerHTML = "";
+     }
+     }, false);
+
+     document.querySelector("#delete").addEventListener("click", function(){
+     	screen.innerHTML = "";
+
+     }, false);
+
+     var elem1 = document.querySelectorAll(".operator");
+     var len1 = elem1.length;
+     for(var i = 0; i < len1; i++)
+     {
+     	elem1[i].addEventListener("click", function(){
+     		operator = this.value;
+     		if(screen.innerHTML === "")
+     		{
+     			screen.innerHTML = screen.innerHTML.concat("");
+     		}
+     		else if(output)
+     		{
+     			screen.innerHTML = output.concat(operator);
+     		}
+     	}, false);
+     }
+   }
+   </script>
+</body>
+</html>
