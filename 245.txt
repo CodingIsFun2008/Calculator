@@ -1,1 +1,0 @@
-245 - 256:  When equal button is clicked, this function happens. First thing that you are checking is if(screen.innerHTML === output) That means that on the screen you are typing 5 x 5. Then, the result will go in eval and it will evaluate the ressult, and it will be stored in output as 25 and shown on screen
